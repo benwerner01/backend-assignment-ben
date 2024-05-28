@@ -1,0 +1,96 @@
+{
+  "info": {
+    "name": "Assignment",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get Stations",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "graphql",
+          "graphql": {
+            "query": "query GetStations($query: String!) {\n  stations(query: $query) {\n    id\n    name\n    coordinates {\n      latitude\n      longitude\n    }\n  }\n}",
+            "variables": "{\n    \"query\": \"Basel\"\n}"
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/graphql",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["graphql"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Connections",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "graphql",
+          "graphql": {
+            "query": "query GetConnections(\n  $after: String\n  $departsAt: DateTime\n  $from: ID!\n  $to: ID!\n  $via: [ID!]\n) {\n  connections(\n    after: $after\n    departsAt: $departsAt\n    from: $from\n    to: $to\n    via: $via\n  ) {\n    nodes {\n      from {\n        id\n        name\n        coordinates {\n          latitude\n          longitude\n        }\n      }\n      to {\n        id\n        name\n        coordinates {\n          latitude\n          longitude\n        }\n      }\n      departure\n      arrival\n      sections {\n        from {\n          id\n          name\n          coordinates {\n            latitude\n            longitude\n          }\n        }\n        to {\n          id\n          name\n          coordinates {\n            latitude\n            longitude\n          }\n        }\n        departure\n        arrival\n      }\n    }\n    pageInfo {\n      endCursor\n    }\n  }\n}",
+            "variables": "{\n    \"from\": \"8500010\",\n    \"to\": \"8503000\",\n    \"via\": [\"8507000\"],\n    \"departsAt\": \"2024-03-10T10:10:00.000\"\n}"
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/graphql",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["graphql"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Save Journey",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "graphql",
+          "graphql": {
+            "query": "mutation SaveJourney($from: ID!, $to: ID!, $via: [ID!]) {\n  saveJourney(from: $from, to: $to, via: $via) {\n    id\n    from {\n      id\n      name\n      coordinates {\n        latitude\n        longitude\n      }\n    }\n    to {\n      id\n      name\n      coordinates {\n        latitude\n        longitude\n      }\n    }\n    via {\n      id\n      name\n      coordinates {\n        latitude\n        longitude\n      }\n    }\n  }\n}",
+            "variables": "{\n    \"from\": \"8500010\",\n    \"to\": \"8503000\",\n    \"via\": [\"8507000\"]\n}"
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/graphql",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["graphql"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Journey",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "graphql",
+          "graphql": {
+            "query": "query GetJourney($id: ID!) {\n  journey(id: $id) {\n    id\n    from {\n      id\n      name\n      coordinates {\n        latitude\n        longitude\n      }\n    }\n    to {\n      id\n      name\n      coordinates {\n        latitude\n        longitude\n      }\n    }\n    via {\n      id\n      name\n      coordinates {\n        latitude\n        longitude\n      }\n    }\n  }\n}",
+            "variables": "{\n    \"id\": \"4592bc1f-57ef-4b7c-b348-f373e9e076d8\"\n}"
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/graphql",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["graphql"]
+        }
+      },
+      "response": []
+    }
+  ]
+}

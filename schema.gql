@@ -1,0 +1,61 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Connection {
+  arrival: DateTime!
+  departure: DateTime!
+  from: Station!
+  sections: [Section!]!
+  to: Station!
+}
+
+type ConnectionConnection {
+  nodes: [Connection!]!
+  pageInfo: PageInfo!
+}
+
+type Coordinates {
+  latitude: Float!
+  longitude: Float!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Journey {
+  connections(after: String, departsAt: DateTime): ConnectionConnection!
+  from: Station!
+  id: ID!
+  to: Station!
+  via: [Station!]!
+}
+
+type Mutation {
+  saveJourney(from: ID!, to: ID!, via: [ID!]): Journey!
+}
+
+type PageInfo {
+  endCursor: String
+}
+
+type Query {
+  connections(after: String, departsAt: DateTime, from: ID!, to: ID!, via: [ID!]): ConnectionConnection!
+  journey(id: ID!): Journey!
+  stations(query: String!): [Station!]!
+}
+
+type Section {
+  arrival: DateTime!
+  departure: DateTime!
+  from: Station!
+  to: Station!
+}
+
+type Station {
+  coordinates: Coordinates!
+  id: ID!
+  name: String!
+}
