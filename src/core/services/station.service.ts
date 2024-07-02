@@ -1,16 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { OpendataService, StationSchema } from '~/infra/opendata';
+import { OpendataService } from '~/infra/opendata';
 import { StationModel } from '../models/station.model';
 import { GetStationsArgs } from '../args/get-stations.args';
-
-const mapStationSchemaToModel = (station: StationSchema): StationModel => ({
-  id: station.id,
-  name: station.name,
-  coordinates: {
-    latitude: station.coordinate.x,
-    longitude: station.coordinate.y,
-  },
-});
+import { mapStationSchemaToModel } from '~/shared/mappings';
 
 @Injectable()
 export class StationService {

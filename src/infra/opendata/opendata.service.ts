@@ -2,6 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConnectionSchema, StationSchema } from './schemas';
 import { GetConnectionsParams, GetStationsParams } from './interfaces';
+import { toDateString, toTimeString } from '~/core/helpers';
 
 @Injectable()
 export class OpendataService {
@@ -42,7 +43,25 @@ export class OpendataService {
   public async getConnections(
     params: GetConnectionsParams,
   ): Promise<ConnectionSchema[]> {
-    // TODO: implement fetching connections from OpenData API
-    return [];
+    const { from, to, via, departsAt, limit, page } = params;
+
+    const { data } = await this.httpService.axiosRef.get(
+      'http://transport.opendata.ch/v1/connections',
+      {
+        params: {
+          from,
+          to,
+          via,
+          date: departsAt ? toDateString(departsAt) : undefined,
+          time: departsAt ? toTimeString(departsAt) : undefined,
+          limit,
+          page,
+        },
+      },
+    );
+
+    const { connections } = data;
+
+    return connections;
   }
 }
