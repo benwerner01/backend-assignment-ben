@@ -9,8 +9,10 @@ export class StationService {
   constructor(private readonly opendataService: OpendataService) {}
 
   public async getStation(args: GetStationsArgs): Promise<StationModel> {
-    // TODO: implement fetching station from the OpenData service
-    return {} as any;
+    const stations = await this.getStations(args);
+
+    /** @todo: use the `/stationboard` endpoint instead  */
+    return stations[0];
   }
 
   public async getStations(args: GetStationsArgs): Promise<StationModel[]> {

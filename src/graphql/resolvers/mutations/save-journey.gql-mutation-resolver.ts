@@ -14,8 +14,29 @@ export class SaveJourneyGqlMutationResolver {
   public async saveJourney(
     @Args() args: SaveJourneyGqlArgs,
   ): Promise<JourneyModel> {
-    // TODO: implement fetching stations from station service
-    // TODO: implement saving respective journey to database
-    return {} as any;
+    const { from, to, via } = args;
+
+    const [fromStation, toStation, viaStations] = await Promise.all([
+      this.stationService.getStation({ query: from }),
+      this.stationService.getStation({ query: to }),
+      via
+        ? Promise.all(
+            via.map((query) => this.stationService.getStation({ query })),
+          )
+        : [],
+    ]);
+
+    const journeyId = await this.journeyService.saveJourney({
+      from: fromStation,
+      to: toStation,
+      via: viaStations,
+    });
+
+    return {
+      id: journeyId,
+      from: fromStation,
+      to: toStation,
+      via: viaStations,
+    };
   }
 }
