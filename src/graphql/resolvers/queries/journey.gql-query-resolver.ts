@@ -9,7 +9,10 @@ export class JourneyGqlQueryResolver {
 
   @Query(() => JourneyModel)
   public async journey(@Args() args: GetJourneyArgs): Promise<JourneyModel> {
-    // TODO: implement fetching journey from journey service
-    return {} as any;
+    const { id } = args;
+
+    const journey = await this.journeyService.getJourney({ id });
+
+    return journey;
   }
 }
