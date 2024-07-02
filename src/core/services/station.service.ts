@@ -1,7 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { OpendataService } from '~/infra/opendata';
+import { OpendataService, StationSchema } from '~/infra/opendata';
 import { StationModel } from '../models/station.model';
 import { GetStationsArgs } from '../args/get-stations.args';
+
+const mapStationSchemaToModel = (station: StationSchema): StationModel => ({
+  id: station.id,
+  name: station.name,
+  coordinates: {
+    latitude: station.coordinate.x,
+    longitude: station.coordinate.y,
+  },
+});
 
 @Injectable()
 export class StationService {
@@ -13,7 +22,10 @@ export class StationService {
   }
 
   public async getStations(args: GetStationsArgs): Promise<StationModel[]> {
-    // TODO: implement fetching stations from the OpenData service
-    return [];
+    const { query } = args;
+
+    const stations = await this.opendataService.getStations({ query });
+
+    return stations.map(mapStationSchemaToModel);
   }
 }

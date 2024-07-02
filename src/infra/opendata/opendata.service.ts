@@ -20,8 +20,23 @@ export class OpendataService {
   public async getStations(
     params: GetStationsParams,
   ): Promise<StationSchema[]> {
-    // TODO: implement fetching stations from OpenData API
-    return [];
+    const { query } = params;
+
+    /** @todo: type the axios response */
+    const { data } = await this.httpService.axiosRef.get(
+      'http://transport.opendata.ch/v1/locations',
+      {
+        params: {
+          query,
+          // We only want stations returned from the `/locations` endpoint
+          type: 'station',
+        },
+      },
+    );
+
+    const { stations } = data;
+
+    return stations;
   }
 
   public async getConnections(

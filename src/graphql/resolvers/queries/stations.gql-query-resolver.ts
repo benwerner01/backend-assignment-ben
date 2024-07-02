@@ -11,7 +11,10 @@ export class StationsGqlQueryResolver {
   public async stations(
     @Args() args: GetStationsArgs,
   ): Promise<StationModel[]> {
-    // TODO: implement fetching stations from station service
-    return [];
+    const { query } = args;
+
+    const stations = await this.stationService.getStations({ query });
+
+    return stations;
   }
 }
